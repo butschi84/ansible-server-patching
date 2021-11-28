@@ -1,0 +1,13 @@
+
+[windows_servers]
+example_server ansible_host=172.20.0.91 prtg_device_id=40
+
+[windows_servers:vars]
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore
+ansible_winrm_scheme=https
+ansible_winrm_port=5986
+ansible_winrm_transport=credssp
+ansible_user="{{windows_admin_username}}"
+ansible_password="{{windows_admin_password}}"
+

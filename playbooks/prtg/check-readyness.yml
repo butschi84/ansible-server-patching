@@ -1,0 +1,18 @@
+---
+
+- name: server patching readyness
+  hosts: all
+  tasks:
+    - name: checking if host is green in prtg (max. wait 10min)
+      check_prtg: 
+        prtg_url: "{{ prtg_api_url }}"
+        api_user: "{{ prtg_api_user }}"
+        api_passhash: "{{ prtg_api_passhash | string }}"
+        device_id: "{{ prtg_device_id | string }}"
+        status: "up"
+        waitFor: 600
+      delegate_to: 127.0.0.1
+      vars:
+        ansible_connection: ssh
+        ansible_user: "{{ linux_admin_username }}"
+        ansible_password: "{{ linux_admin_password }}"
