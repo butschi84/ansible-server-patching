@@ -27,20 +27,19 @@ The credential store contains the passwords to connect to your linux and windows
 
 Setup your vault using the following procedure:
 
-1. create ansible vault
+1. Save vault password to file
+```
+echo MyPassword > vault-password.txt
+```
+
+2. create ansible vault
   
 ```
 # create vault
 ansible-vault create ./environments/prod/group_vars/all/vault.yml
 ```
 
-2. specify a password for the new vault at the command line
-3. Save vault password to file
-```
-echo MyPassword > vault-password.txt
-```
-
-4. enter the following information
+3. enter the following information
 
 ```
 # Connection parameters
@@ -50,7 +49,7 @@ linux_admin_username: "myLinuxUser"
 linux_admin_password: "myLinuxPassword"
 ```
 
-5. edit hosts file
+4. edit hosts file
 
 edit the host file as desired
 ```
