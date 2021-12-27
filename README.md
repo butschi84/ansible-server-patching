@@ -13,9 +13,12 @@ This repository will contain ansible playbooks and custom modules helpful to pat
 - [Playbooks<a name="Playbooks"></a>](#playbooks)
   - [PRTG<a name="PlaybooksPRTG"></a>](#prtg)
     - [check-readyness.yml<a name="PlaybooksPRTGCheckReadyness"></a>](#check-readynessyml)
+    - [pause-monitoring.yml<a name="PlaybooksPRTGPause"></a>](#pause-monitoringyml)
+    - [resume-monitoring.yml<a name="PlaybooksPRTGResume"></a>](#resume-monitoringyml)
 - [Custom Modules<a name="CustomModules"></a>](#custom-modules)
   - [PRTG<a name="CustomModulesPRTG"></a>](#prtg-1)
     - [check_prtg<a name="CustomModulesPRTGCheck"></a>](#check_prtg)
+    - [pause_prtg<a name="CustomModulesPRTGPause"></a>](#pause_prtg)
 
 # Setup Framework<a name="Setup"></a>
 
@@ -97,11 +100,31 @@ Playbooks useful to run checks on you PRTG monitoring, pause sensors, resume sen
 ### check-readyness.yml<a name="PlaybooksPRTGCheckReadyness"></a>
 > playbooks/prtg/check-readyness.yml
 
-Check the current status of a device / system in prtg.
+Example Playbook to check the current status of a device / system in prtg.
 Each host will be checked in prtg by using its specific device id. 
 
 ```
+# Usage:
 ansible-playbook playbooks/prtg/check-readyness.yml --limit example_server
+```
+
+### pause-monitoring.yml<a name="PlaybooksPRTGPause"></a>
+> playbooks/prtg/pause-monitoring.yml
+
+Example Playbook to pause monitoring of a device / system in prtg.
+
+```
+# Usage:
+ansible-playbook playbooks/prtg/pause-monitoring.yml --limit example_server
+```
+### resume-monitoring.yml<a name="PlaybooksPRTGResume"></a>
+> playbooks/prtg/resume-monitoring.yml
+
+Example Playbook to resume monitoring of a device / system in prtg.
+
+```
+# Usage:
+ansible-playbook playbooks/prtg/resume-monitoring.yml --limit example_server
 ```
 
 # Custom Modules<a name="CustomModules"></a>
@@ -117,3 +140,12 @@ Custom module that can be used to check the status of a device in prtg monitorin
 
 * Module should be executed on a linux system that has connectivity (http) to the prtg server.
 * For Example Usage see playbook [check-readyness.yml](#PlaybooksPRTGCheckReadyness)
+
+### pause_prtg<a name="CustomModulesPRTGPause"></a>
+> library/action_plugins/pause_prtg
+
+Custom module that can be used to pause or resume monitoring of a device in prtg.
+
+* Module should be executed on a linux system that has connectivity (http) to the prtg server.
+* For Example Usage see playbook [pause-monitoring.yml](#PlaybooksPRTGPause)
+* For Example Usage see playbook [resume-monitoring.yml](#PlaybooksPRTGResume)
