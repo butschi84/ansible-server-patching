@@ -136,10 +136,24 @@ Modules for Paessler PRTG monitoring.
 ### check_prtg<a name="CustomModulesPRTGCheck"></a>
 > library/action_plugins/check_prtg
 
-Custom module that can be used to check the status of a device in prtg monitoring.
+Custom module that can be used to check the status of a device in prtg monitoring (up, warning, down).
 
 * Module should be executed on a linux system that has connectivity (http) to the prtg server.
 * For Example Usage see playbook [check-readyness.yml](#PlaybooksPRTGCheckReadyness)
+
+**Parameters**
+* **api_user**:
+  PRTG user for making API calls (can be local or domain user i.e. "prtgadmin")
+* **api_passhash**:
+  Passhash from PRTG for API access (i.e. 1234512345)
+* **prtg_url**:
+  Address of PRTG Server (i.e. "192.168.2.100") 
+* **device_id**:
+  Id of device in PRTG that should be checked (i.e. "1022")
+* **status**:
+  Desired Status of device in PRTG (i.e. "up", "warning", "down"). Default: "up"
+* **waitFor**:
+  If device does not have the desired status in PRTG, how many seconds should we wait (default: 0)
 
 ### pause_prtg<a name="CustomModulesPRTGPause"></a>
 > library/action_plugins/pause_prtg
