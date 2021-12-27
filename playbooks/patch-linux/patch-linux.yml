@@ -1,0 +1,11 @@
+---
+- name: linux server patching
+  hosts: all
+  tasks:
+    - name: Check linux distribution
+      debug:
+        msg: running on distribution '{{ansible_os_family}}'
+
+    - name: Invoke correct patching task for distribution
+      include_tasks: patch-debian.yml
+      when: ansible_os_family == "Debian"

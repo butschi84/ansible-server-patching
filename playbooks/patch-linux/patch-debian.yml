@@ -1,0 +1,27 @@
+---
+- name: start message
+  debug:
+    msg: starting patching for debian
+
+- name: update apt repo and cache
+  become: yes
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+    cache_valid_time: 3600
+
+- name: get list of available package updates
+  become: yes
+  command: apt list --upgradable
+  register: apt_updates
+
+- name: package updates
+  debug:
+    msg: "{{ apt_updates.stdout_lines }}"
+
+- name: install updates
+  become: yes
+  become_user: root
+  apt:
+    name: "*"
+    state: latest
