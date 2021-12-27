@@ -1,22 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# roman huesler (opensight.ch) - github.com/butschi84
 #
-# This file is part of Ansible
+# Ansible Module "check_prtg"
+# - check monitoring status of a prtg device
 #
-# Ansible is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Ansible is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
-
 # PRTG Status list:
 # 0=None
 # 1=Unknown
@@ -33,6 +22,8 @@
 # 12=Paused Until
 # 13=Down Acknowledged
 # 14=Down Partial
+# ===================================================================
+
 
 from ansible.module_utils.urls import *
 from ansible.module_utils.basic import *
@@ -92,6 +83,8 @@ except ImportError:
 # ===========================================
 # PRTG helper methods
 #
+
+
 def api_call(module, path, params):
 
     # determine URL for PRTG API
@@ -128,9 +121,10 @@ def validate_response(module, resp_info):
 
     return 0
 
+
 def queryPrtgDevice(module, device_id):
     check_resp, check_info = api_call(module, '/api/table.json', {
-                                        'content': 'devices', 'output': 'json', 'columns': 'objid,device,host,group,active,status,warnsens,downsens,upsens,totalsens', 'filter_objid': device_id})
+        'content': 'devices', 'output': 'json', 'columns': 'objid,device,host,group,active,status,warnsens,downsens,upsens,totalsens', 'filter_objid': device_id})
     if(validate_response(module, check_info) != 200):
         module.fail_json(msg='API request failed')
     check_result = json.loads(check_resp.read())
@@ -141,11 +135,13 @@ def queryPrtgDevice(module, device_id):
         device = check_result['devices'][0]
         return device
     else:
-        module.fail_json(msg='API request failed. No valid response',detail=check_result)
+        module.fail_json(
+            msg='API request failed. No valid response', detail=check_result)
 
 # ===========================================
 # Module execution
 #
+
 
 def main():
 
@@ -157,7 +153,7 @@ def main():
             device_id=dict(required=True),
             status=dict(default='up', choices=['up', 'warning', 'down']),
             validate_certs=dict(default='yes', type='bool'),
-            waitFor=dict(default=0, type='int',required=False),
+            waitFor=dict(default=0, type='int', required=False),
         ),
         supports_check_mode=True
     )
@@ -171,7 +167,7 @@ def main():
         'device_details': device,
         'msg': ''
     }
-    
+
     # wait for desired result
     waited = 0
     while waited <= int(module.params['waitFor']):
@@ -191,20 +187,24 @@ def main():
                 module.exit_json(changed=result['dev_changed'], details=result)
             elif waited > int(module.params['waitFor']):
                 result['msg'] = "device is not up or not all sensors are green"
-                module.fail_json(changed=result['dev_changed'], details=result, msg=result['msg'])
+                module.fail_json(
+                    changed=result['dev_changed'], details=result, msg=result['msg'])
             else:
-                result['msg'] = ("device is not up or not all sensors are green after waiting " + str(waited) + " seconds")
+                result['msg'] = (
+                    "device is not up or not all sensors are green after waiting " + str(waited) + " seconds")
                 waited += 1
                 time.sleep(1)
         elif module.params['status'] == 'down':
-            if (int(device['status_raw']) != 3 and int(device['status_raw']) != 4) or totalsens!=upsens:
+            if (int(device['status_raw']) != 3 and int(device['status_raw']) != 4) or totalsens != upsens:
                 result['msg'] = "device is down or some sensors are not green"
                 module.exit_json(changed=result['dev_changed'], details=result)
             elif waited > int(module.params['waitFor']):
                 result['msg'] = "device is not down. all sensors are green"
-                module.fail_json(changed=result['dev_changed'], details=result, msg=result['msg'])
+                module.fail_json(
+                    changed=result['dev_changed'], details=result, msg=result['msg'])
             else:
-                result['msg'] = ("device is not down. all sensors are green after waiting " + str(waited) + " seconds")
+                result['msg'] = (
+                    "device is not down. all sensors are green after waiting " + str(waited) + " seconds")
                 waited += 1
                 time.sleep(1)
         elif module.params['status'] == 'warning':
@@ -213,13 +213,17 @@ def main():
                 module.exit_json(changed=result['dev_changed'], details=result)
             elif waited > int(module.params['waitFor']):
                 result['msg'] = "device is not in warning state"
-                module.fail_json(changed=result['dev_changed'], details=result, msg=result['msg'])
+                module.fail_json(
+                    changed=result['dev_changed'], details=result, msg=result['msg'])
             else:
-                result['msg'] = ("device is not in warning state after waiting " + str(waited) + " seconds")
+                result['msg'] = (
+                    "device is not in warning state after waiting " + str(waited) + " seconds")
                 waited += 1
                 time.sleep(1)
 
-    module.fail_json(changed=result['dev_changed'], details=result, msg=result['msg'])
+    module.fail_json(changed=result['dev_changed'],
+                     details=result, msg=result['msg'])
+
 
 # import module snippets
 if __name__ == '__main__':
