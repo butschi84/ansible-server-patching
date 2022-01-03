@@ -163,3 +163,15 @@ Custom module that can be used to pause or resume monitoring of a device in prtg
 * Module should be executed on a linux system that has connectivity (http) to the prtg server.
 * For Example Usage see playbook [pause-monitoring.yml](#PlaybooksPRTGPause)
 * For Example Usage see playbook [resume-monitoring.yml](#PlaybooksPRTGResume)
+
+**Parameters**
+* **api_user**:
+  PRTG user for making API calls (can be local or domain user i.e. "prtgadmin")
+* **api_passhash**:
+  Passhash from PRTG for API access (i.e. 1234512345)
+* **prtg_url**:
+  Address of PRTG Server (i.e. "192.168.2.100") 
+* **device_id**:
+  Id of device in PRTG that should be checked (i.e. "1022")
+* **status**:
+  Desired Status of device in PRTG after the action is taken (i.e. "paused", "running"). Default: "paused"
