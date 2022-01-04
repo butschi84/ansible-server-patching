@@ -10,15 +10,20 @@ This repository will contain ansible playbooks and custom modules helpful to pat
 - [Setup Framework<a name="Setup"></a>](#setup-framework)
   - [Setup credentials<a name="SetupCredentials"></a>](#setup-credentials)
   - [Module - PRTG<a name="SetupModulePRTG"></a>](#module---prtg)
+  - [Module - HYPERV<a name="SetupModuleHyperv"></a>](#module---hyperv)
 - [Playbooks<a name="Playbooks"></a>](#playbooks)
   - [PRTG<a name="PlaybooksPRTG"></a>](#prtg)
     - [check-readyness.yml<a name="PlaybooksPRTGCheckReadyness"></a>](#check-readynessyml)
     - [pause-monitoring.yml<a name="PlaybooksPRTGPause"></a>](#pause-monitoringyml)
     - [resume-monitoring.yml<a name="PlaybooksPRTGResume"></a>](#resume-monitoringyml)
+  - [Hyper-V<a name="PlaybooksHyperv"></a>](#hyper-v)
+    - [hyperv-check-snapshots.yml<a name="PlaybooksHypervCheck"></a>](#hyperv-check-snapshotsyml)
 - [Custom Modules<a name="CustomModules"></a>](#custom-modules)
   - [PRTG<a name="CustomModulesPRTG"></a>](#prtg-1)
     - [check_prtg<a name="CustomModulesPRTGCheck"></a>](#check_prtg)
     - [pause_prtg<a name="CustomModulesPRTGPause"></a>](#pause_prtg)
+  - [Hyper-V<a name="CustomModulesHyperV"></a>](#hyper-v-1)
+    - [hyperv_check_snapshots<a name="CustomModulesHyperVCheck"></a>](#hyperv_check_snapshots)
 
 # Setup Framework<a name="Setup"></a>
 
@@ -88,6 +93,28 @@ You can find the PRTG device id in your prtg web interface.
 
 The password hash has to be taken from PRTG.
 
+## Module - HYPERV<a name="SetupModuleHyperv"></a>
+
+If you plan to use the 'hyperv' module you have to setup the following:
+
+1. add hyperv parameters to your vault
+
+```
+ansible-vault edit ./environments/prod/group_vars/all/vault.yml
+```
+2. append your prtg connection parameters
+```
+# parameters for module 'hyperv'
+module_hyperv_host: 172.20.0.91
+```
+3. edit environments/prod/group_vars/all/hosts
+
+Add the hyperv_vmname to each of the hosts you want to use with the hyperv module like so:
+```
+[windows_servers]
+exampleServerVM ansible_host=172.20.0.91 hyperv_vmname=exampleServerVM
+```
+
 # Playbooks<a name="Playbooks"></a>
 This section contains some examples of playbooks that show the usage of the custom modules in the repository.
 
@@ -125,6 +152,22 @@ Example Playbook to resume monitoring of a device / system in prtg.
 ```
 # Usage:
 ansible-playbook playbooks/prtg/resume-monitoring.yml --limit example_server
+```
+
+## Hyper-V<a name="PlaybooksHyperv"></a>
+Playbooks useful to run checks on your Hyper-V Host, check snapshots and age, create snapshots, delete snapshots. 
+
+> These playbooks use the 'hyperv' module of this repository.
+> So make sure you have setup the hyperv module correctly as specified in the 'Setup Framework' section.
+
+### hyperv-check-snapshots.yml<a name="PlaybooksHypervCheck"></a>
+> playbooks/hyperv/hyperv-check-snapshots.yml
+
+Example Playbook to check wether a hyper-v vm has a snapshot and age is younger than 1 day.
+
+```
+# Usage:
+ansible-playbook playbooks/hyperv/hyperv-check-snapshots.yml --limit example_server
 ```
 
 # Custom Modules<a name="CustomModules"></a>
@@ -175,3 +218,22 @@ Custom module that can be used to pause or resume monitoring of a device in prtg
   Id of device in PRTG that should be checked (i.e. "1022")
 * **status**:
   Desired Status of device in PRTG after the action is taken (i.e. "paused", "running"). Default: "paused"
+
+## Hyper-V<a name="CustomModulesHyperV"></a>
+Modules for checking-, creating- and deleting snapshots on Microsoft Hyper-V Hypervisors.
+
+### hyperv_check_snapshots<a name="CustomModulesHyperVCheck"></a>
+> library/action_plugins/hyperv_check_snapshots
+
+Custom module that can be used to check wether a hyper-v vm has a snapshot and also age of the snapshot.
+
+* Module is a powershell script should be executed on a windows hyper-v host
+* For Example Usage see playbook [hyperv-check-snapshots.yml](#PlaybooksHypervCheck)
+
+**Parameters**
+* **vmname**:<br />
+  name of hyper-v vm that should be checked (i.e. "myvm01")
+* **state**:<br />
+  state of snapshot should be: "absent" or "present"
+* **snapshotAgeYoungerThanMinutes**:<br />
+  max snapshot age in minutes if "present" was specified
