@@ -12,6 +12,7 @@ These are the current Features of the patching framework.
   * Stop a VM
   * Check if a VM has a snapshot younger than x-Minutes  
   * Check if a VM has no snapshots
+  * Create a snapshot for a VM
 * PRTG
   * Pause monitoring of a PRTG Device
   * Resume monitoring of a PRTG Device
@@ -39,6 +40,7 @@ These are the current Features of the patching framework.
     - [pause_prtg<a name="CustomModulesPRTGPause"></a>](#pause_prtg)
   - [Hyper-V<a name="CustomModulesHyperV"></a>](#hyper-v-1)
     - [hyperv_check_snapshots<a name="CustomModulesHyperVCheck"></a>](#hyperv_check_snapshots)
+    - [hyperv_action_createsnapshot<a name="CustomModulesHypervCreate"></a>](#hyperv_action_createsnapshot)
     - [hyperv_action_state<a name="CustomModulesHyperVActionState"></a>](#hyperv_action_state)
 
 # Setup Framework<a name="Setup"></a>
@@ -262,6 +264,19 @@ Custom module that can be used to check wether a hyper-v vm has a snapshot and a
   state of snapshot should be: "absent" or "present"
 * **snapshotAgeYoungerThanMinutes**:<br />
   max snapshot age in minutes if "present" was specified
+### hyperv_action_createsnapshot<a name="CustomModulesHypervCreate"></a>
+> library/action_plugins/hyperv_action_createsnapshot
+
+Custom module that can be used to create a new snapshot for a hyper-v vm
+
+* Module is a powershell script should be executed on a windows hyper-v host
+* For Example Usage see playbook [hyperv-action-createsnapshot.yml](#PlaybooksHypervCreate)
+
+**Parameters**
+* **vmname**:<br />
+  name of hyper-v vm where snapshot should be created (i.e. "myvm01")
+* **snapshotName**:<br />
+  (optional) name of snapshot that should be created
 ### hyperv_action_state<a name="CustomModulesHyperVActionState"></a>
 > library/action_plugins/hyperv_action_state
 
