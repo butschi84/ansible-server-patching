@@ -25,6 +25,7 @@ This repository will contain ansible playbooks and custom modules helpful to pat
     - [pause_prtg<a name="CustomModulesPRTGPause"></a>](#pause_prtg)
   - [Hyper-V<a name="CustomModulesHyperV"></a>](#hyper-v-1)
     - [hyperv_check_snapshots<a name="CustomModulesHyperVCheck"></a>](#hyperv_check_snapshots)
+    - [hyperv_action_state<a name="CustomModulesHyperVActionState"></a>](#hyperv_action_state)
 
 # Setup Framework<a name="Setup"></a>
 
@@ -247,3 +248,16 @@ Custom module that can be used to check wether a hyper-v vm has a snapshot and a
   state of snapshot should be: "absent" or "present"
 * **snapshotAgeYoungerThanMinutes**:<br />
   max snapshot age in minutes if "present" was specified
+### hyperv_action_state<a name="CustomModulesHyperVActionState"></a>
+> library/action_plugins/hyperv_action_state
+
+Custom module that can be used to start or shutdown a hyper-v vm.
+
+* Module is a powershell script should be executed on a windows hyper-v host
+
+**Parameters**
+* **vmname**:<br />
+  name of hyper-v vm that should be started or shutdown (i.e. "myvm01")
+* **state**:<br />
+  state of vm should be: "running" or "stopped"
+
