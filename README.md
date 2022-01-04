@@ -4,8 +4,22 @@
 
 This repository will contain ansible playbooks and custom modules helpful to patch windows and linux systems. You will also be able to run checks and actions on third party systems like prtg, hyper-v, veeam and so on.
 
+## Features
+These are the current Features of the patching framework.
+
+* Hyper-V
+  * Start a VM
+  * Stop a VM
+  * Check if a VM has a snapshot younger than x-Minutes  
+  * Check if a VM has no snapshots
+* PRTG
+  * Pause monitoring of a PRTG Device
+  * Resume monitoring of a PRTG Device
+  * Check current monitoring status of a PRTG Device
+
 # Contents
 - [ansible - server patching framework](#ansible---server-patching-framework)
+  - [Features](#features)
 - [Contents](#contents)
 - [Setup Framework<a name="Setup"></a>](#setup-framework)
   - [Setup credentials<a name="SetupCredentials"></a>](#setup-credentials)
