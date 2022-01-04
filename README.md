@@ -1,6 +1,6 @@
 # ansible - server patching framework
 
-**Use at your own risk**
+:warning: **Use at your own risk** :warning:
 
 This repository will contain ansible playbooks and custom modules helpful to patch windows and linux systems. You will also be able to run checks and actions on third party systems like prtg, hyper-v, veeam and so on.
 
