@@ -18,6 +18,7 @@ This repository will contain ansible playbooks and custom modules helpful to pat
     - [resume-monitoring.yml<a name="PlaybooksPRTGResume"></a>](#resume-monitoringyml)
   - [Hyper-V<a name="PlaybooksHyperv"></a>](#hyper-v)
     - [hyperv-check-snapshots.yml<a name="PlaybooksHypervCheck"></a>](#hyperv-check-snapshotsyml)
+    - [hyperv-check-nosnapshots.yml<a name="PlaybooksHypervCheckNoS"></a>](#hyperv-check-nosnapshotsyml)
 - [Custom Modules<a name="CustomModules"></a>](#custom-modules)
   - [PRTG<a name="CustomModulesPRTG"></a>](#prtg-1)
     - [check_prtg<a name="CustomModulesPRTGCheck"></a>](#check_prtg)
@@ -168,6 +169,15 @@ Example Playbook to check wether a hyper-v vm has a snapshot and age is younger 
 ```
 # Usage:
 ansible-playbook playbooks/hyperv/hyperv-check-snapshots.yml --limit example_server
+```
+### hyperv-check-nosnapshots.yml<a name="PlaybooksHypervCheckNoS"></a>
+> playbooks/hyperv/hyperv-check-nosnapshots.yml
+
+Example Playbook to check wether a hyper-v vm has no snapshot.
+
+```
+# Usage:
+ansible-playbook playbooks/hyperv/hyperv-check-nosnapshots.yml --limit example_server
 ```
 
 # Custom Modules<a name="CustomModules"></a>
