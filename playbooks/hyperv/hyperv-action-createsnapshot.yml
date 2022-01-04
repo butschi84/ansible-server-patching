@@ -1,0 +1,19 @@
+---
+- name: create snapshots for vms
+  hosts: all
+  # skip gathering facts (vm might be switched off in order to create snapshot)
+  gather_facts: no
+  tasks:
+    - name: create a new snapshot for vm
+      hyperv_action_createsnapshot:
+        vmname: "{{ hyperv_vm_name }}"
+        snapshotName: "snapshot by ansible patching automation"
+      delegate_to: "{{ module_hyperv_host }}"
+      vars:
+        ansible_connection: winrm
+        ansible_winrm_server_cert_validation: ignore
+        ansible_winrm_scheme: https
+        ansible_winrm_port: 5986
+        ansible_winrm_transport: credssp
+        ansible_user: "{{ windows_admin_username }}"
+        ansible_password: "{{ windows_admin_password }}"
