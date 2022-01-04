@@ -33,6 +33,7 @@ These are the current Features of the patching framework.
     - [resume-monitoring.yml<a name="PlaybooksPRTGResume"></a>](#resume-monitoringyml)
   - [Hyper-V<a name="PlaybooksHyperv"></a>](#hyper-v)
     - [hyperv-check-snapshots.yml<a name="PlaybooksHypervCheck"></a>](#hyperv-check-snapshotsyml)
+    - [hyperv-action-createsnapshot.yml<a name="PlaybooksHypervCreate"></a>](#hyperv-action-createsnapshotyml)
     - [hyperv-check-nosnapshots.yml<a name="PlaybooksHypervCheckNoS"></a>](#hyperv-check-nosnapshotsyml)
 - [Custom Modules<a name="CustomModules"></a>](#custom-modules)
   - [PRTG<a name="CustomModulesPRTG"></a>](#prtg-1)
@@ -186,6 +187,15 @@ Example Playbook to check wether a hyper-v vm has a snapshot and age is younger 
 ```
 # Usage:
 ansible-playbook playbooks/hyperv/hyperv-check-snapshots.yml --limit example_server
+```
+### hyperv-action-createsnapshot.yml<a name="PlaybooksHypervCreate"></a>
+> playbooks/hyperv/hyperv-action-createsnapshot.yml
+
+Example Playbook to show snapshot creation for a hyper-v vm.
+
+```
+# Usage:
+ansible-playbook playbooks/hyperv/hyperv-action-createsnapshot.yml --limit example_server
 ```
 ### hyperv-check-nosnapshots.yml<a name="PlaybooksHypervCheckNoS"></a>
 > playbooks/hyperv/hyperv-check-nosnapshots.yml
