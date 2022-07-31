@@ -10,5 +10,5 @@
       debug:
         msg: |
           {% for k in update_results.updates %}
-          {{ update_results.updates[k].title }}
+          {{ k.title }}
           {% endfor %}
