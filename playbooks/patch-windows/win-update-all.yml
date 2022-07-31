@@ -1,0 +1,15 @@
+- name: Install all updates and reboot as many times as needed
+  hosts: all
+  tasks:
+    - name: Create Directory
+      ansible.windows.win_file:
+        path: c:\temp
+        state: directory
+
+    - name: Start Windows Patching
+      ansible.windows.win_updates:
+        category_names: "*"
+        reboot: no
+        log_path: c:\temp\patching.txt
+      register: update_result
+      until: update_result.found_update_count == 0

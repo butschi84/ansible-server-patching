@@ -1,0 +1,21 @@
+- name: Install only particular updates based on the KB numbers
+   hosts: all
+   tasks:
+
+     - name: Create Directory
+       debug:
+         msg: "Create directory for logile"
+       ansible.windows.win_file:
+         path: c:\temp
+         state: directory
+
+- name: Install only particular updates based on the KB numbers
+   debug:
+      msg: "Logfile in c:\temp\patching.txt"
+  ansible.windows.win_updates:
+    category_name: '*'
+    accept_list:
+    - KB5003671
+   log_path: c:\temp\patching.txt
+   register: update_result
+   until: update_result.found_update_count == 0                     

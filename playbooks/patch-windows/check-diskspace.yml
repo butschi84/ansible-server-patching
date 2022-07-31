@@ -1,0 +1,17 @@
+---
+- name: check free disk space
+  hosts: all
+  tasks:
+    - name: "Check free space in C:"
+      win_shell: "write-host ([math]::Round((Get-PSDrive C | Select-Object Free).free / 1024 / 1024 / 1024,2))"
+      register: freespace
+
+    - name: report free disk space
+      debug:
+        msg: |
+          "{{ freespace.stdout }} GB"
+
+    - name: fail if there is not enough space
+      fail:
+        msg: "VM {{inventory_hostname}} has not enough space"
+      when: "{{freespace.stdout | int < 20}}"

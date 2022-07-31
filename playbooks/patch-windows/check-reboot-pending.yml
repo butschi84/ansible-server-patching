@@ -1,0 +1,38 @@
+- name: Examine various registry locations identify a pending reboot
+  win_shell: |
+
+    $results = @{'needs_reboot'=$false ; 'reason'=@()}
+    $regpath = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending"
+    if (Get-ChildItem -Path $regpath -ErrorAction Ignore) {
+      $results['needs_reboot']=$true
+      $results['reason']+='Component Based Servicing'
+    }
+    $regpath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired"
+    if (Get-Item -Path $regpath -ErrorAction Ignore) {
+      $results['needs_reboot']=$true
+      $results['reason']+='WindowsUpdate'
+    }
+    # $regpath = "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager"
+    # if (Get-ItemProperty -Path $regpath -Name PendingFileRenameOperations -ErrorAction Ignore) {
+    #   $results['needs_reboot']=$true
+    #   $results['reason']+='PendingFileRenameOperations'
+    # }
+    try {
+      $util = [wmiclass]"\\.\root\ccm\clientsdk:CCM_ClientUtilities"
+      $status = $util.DetermineIfRebootPending()
+      if(($status -ne $null) -and $status.RebootPending){
+        $results['needs_reboot']=$true
+        $results['reason']+='CCM_RebootPending'
+      }
+    } catch{}
+
+    return $results | ConvertTo-Json
+  register: needs_reboot
+
+- name: set needs_reboot for other roles/plays
+  set_fact:
+    needs_reboot: "{{ needs_reboot.stdout.needs_reboot|default(false) }}"
+
+- name: debug output
+  debug:
+    var: needs_reboot
