@@ -1,4 +1,0 @@
----
-- name: common task
-  debug:
-    msg: "initialize patching"

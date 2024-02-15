@@ -8,4 +8,19 @@
       vars:
         tasks:
           - check_monitoring
+
+    # pause monitoring for prtg device
+    - name: "pause monitoring for device {{ inventory_hostname }}"
+      include_role:
+        name: prtg
+      vars:
+        tasks:
           - pause_monitoring
+
+    # resume monitoring for prtg device
+    - name: "resume monitoring for device {{ inventory_hostname }}"
+      include_role:
+        name: prtg
+      vars:
+        tasks:
+          - resume_monitoring

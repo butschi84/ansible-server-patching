@@ -8,12 +8,21 @@
 
 # check monitoring
 # ----------------
-# pacheckuse prtg monitoring of device if 'check_monitoring' was specified
-- include_tasks: check_prtg.yml
+# check prtg monitoring of device if 'check_monitoring' was specified
+- name: "check if state of devices is 'up' in prtg"
+  include_tasks: check_prtg.yml
   when: "'check_monitoring' in tasks"
 
 # pause monitoring
 # ----------------
 # pause prtg monitoring of device if 'pause_monitoring' was specified
-- include_tasks: pause_prtg.yml
+- name: "pause prtg monitoring for devices"
+  include_tasks: pause_prtg.yml
   when: "'pause_monitoring' in tasks"
+
+# resume monitoring
+# ----------------
+# resume prtg monitoring of device if 'resume_monitoring' was specified
+- name: "resume prtg monitoring for devices"
+  include_tasks: resume_prtg.yml
+  when: "'resume_monitoring' in tasks"
