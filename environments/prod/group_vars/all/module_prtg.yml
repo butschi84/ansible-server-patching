@@ -1,4 +1,0 @@
-# variables for custom module - prtg
-prtg_api_user: "{{module_prtg_api_username}}"
-prtg_api_passhash: "{{module_prtg_api_passhash}}"
-prtg_api_url: "http://{{module_prtg_server_address}}"
