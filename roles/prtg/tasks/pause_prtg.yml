@@ -1,17 +1,11 @@
 ---
-- name: check variable prtg_device_id
-  ansible.builtin.fail:
-    msg: "host variable 'prtg_device_id' has to be defined in order to check the prtg device status"
-  when: prtg_device_id is undefined
-
-- name: checking if host is green in prtg (max. wait 10min)
-  check_prtg:
+- name: pause prtg monitoring for device
+  pause_prtg:
     prtg_url: "{{ prtg_api_url }}"
     api_user: "{{ prtg_api_user }}"
     api_passhash: "{{ prtg_api_passhash | string }}"
     device_id: "{{ prtg_device_id | string }}"
-    status: "up"
-    waitFor: "{{ prtg_check_timeout | int }}"
+    status: "paused"
   delegate_to: 127.0.0.1
   # vars:
   #   ansible_connection: ssh

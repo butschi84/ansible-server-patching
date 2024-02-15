@@ -1,0 +1,19 @@
+---
+# error prevention
+# ----------------
+- name: check variable prtg_device_id
+  ansible.builtin.fail:
+    msg: "host variable 'prtg_device_id' has to be defined in order to check the prtg device status"
+  when: prtg_device_id is undefined
+
+# check monitoring
+# ----------------
+# pacheckuse prtg monitoring of device if 'check_monitoring' was specified
+- include_tasks: check_prtg.yml
+  when: "'check_monitoring' in tasks"
+
+# pause monitoring
+# ----------------
+# pause prtg monitoring of device if 'pause_monitoring' was specified
+- include_tasks: pause_prtg.yml
+  when: "'pause_monitoring' in tasks"

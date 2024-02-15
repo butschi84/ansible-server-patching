@@ -1,0 +1,10 @@
+---
+- name: "checking if host {{inventory_hostname}} ({{prtg_device_id}}) is green in prtg (max. wait 10min)"
+  check_prtg:
+    prtg_url: "{{ prtg_api_url }}"
+    api_user: "{{ prtg_api_user }}"
+    api_passhash: "{{ prtg_api_passhash | string }}"
+    device_id: "{{ prtg_device_id | string }}"
+    status: "up"
+    waitFor: "{{ prtg_check_timeout | int }}"
+  delegate_to: 127.0.0.1

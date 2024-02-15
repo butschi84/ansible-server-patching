@@ -1,4 +1,3 @@
-prtg_check_status: true
 ansible_connection: winrm
 ansible_winrm_server_cert_validation: ignore
 ansible_winrm_scheme: https

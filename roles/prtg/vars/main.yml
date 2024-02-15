@@ -1,0 +1,2 @@
+# maxium wait period until a device becomes green (up) in prtg
+prtg_check_timeout: "600"
