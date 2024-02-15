@@ -1,0 +1,29 @@
+all:
+  hosts:
+    windows_example_server:
+    linux_example_server:
+
+# ====================================
+# MAIN GROUPS
+# ====================================
+windows_servers:
+  children:
+    windows_group_1:
+
+linux_servers:
+  children:
+    linux_group_1:
+
+# ====================================
+# PATCHING GROUPS
+# ====================================
+
+# windows servers
+windows_group_1:
+  hosts:
+    windows_example_server:
+
+# linux servers
+linux_group_1:
+  hosts:
+    linux_example_server:

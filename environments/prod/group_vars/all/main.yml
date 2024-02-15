@@ -1,0 +1,2 @@
+patching_strategy:
+  - prtg_check_status

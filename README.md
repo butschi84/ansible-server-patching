@@ -22,27 +22,27 @@ These are the current Features of the patching framework.
 - [ansible - server patching framework](#ansible---server-patching-framework)
   - [Features](#features)
 - [Contents](#contents)
-- [Setup Framework<a name="Setup"></a>](#setup-framework)
-  - [Setup credentials<a name="SetupCredentials"></a>](#setup-credentials)
-  - [Module - PRTG<a name="SetupModulePRTG"></a>](#module---prtg)
-  - [Module - HYPERV<a name="SetupModuleHyperv"></a>](#module---hyperv)
-- [Playbooks<a name="Playbooks"></a>](#playbooks)
-  - [PRTG<a name="PlaybooksPRTG"></a>](#prtg)
-    - [check-readyness.yml<a name="PlaybooksPRTGCheckReadyness"></a>](#check-readynessyml)
-    - [pause-monitoring.yml<a name="PlaybooksPRTGPause"></a>](#pause-monitoringyml)
-    - [resume-monitoring.yml<a name="PlaybooksPRTGResume"></a>](#resume-monitoringyml)
-  - [Hyper-V<a name="PlaybooksHyperv"></a>](#hyper-v)
-    - [hyperv-check-snapshots.yml<a name="PlaybooksHypervCheck"></a>](#hyperv-check-snapshotsyml)
-    - [hyperv-action-createsnapshot.yml<a name="PlaybooksHypervCreate"></a>](#hyperv-action-createsnapshotyml)
-    - [hyperv-check-nosnapshots.yml<a name="PlaybooksHypervCheckNoS"></a>](#hyperv-check-nosnapshotsyml)
-- [Custom Modules<a name="CustomModules"></a>](#custom-modules)
-  - [PRTG<a name="CustomModulesPRTG"></a>](#prtg-1)
-    - [check_prtg<a name="CustomModulesPRTGCheck"></a>](#check_prtg)
-    - [pause_prtg<a name="CustomModulesPRTGPause"></a>](#pause_prtg)
-  - [Hyper-V<a name="CustomModulesHyperV"></a>](#hyper-v-1)
-    - [hyperv_check_snapshots<a name="CustomModulesHyperVCheck"></a>](#hyperv_check_snapshots)
-    - [hyperv_action_createsnapshot<a name="CustomModulesHypervCreate"></a>](#hyperv_action_createsnapshot)
-    - [hyperv_action_state<a name="CustomModulesHyperVActionState"></a>](#hyperv_action_state)
+- [Setup Framework](#setup-framework)
+  - [Setup credentials](#setup-credentials)
+  - [Module - PRTG](#module---prtg)
+  - [Module - HYPERV](#module---hyperv)
+- [Playbooks](#playbooks)
+  - [PRTG](#prtg)
+    - [check-readyness.yml](#check-readynessyml)
+    - [pause-monitoring.yml](#pause-monitoringyml)
+    - [resume-monitoring.yml](#resume-monitoringyml)
+  - [Hyper-V](#hyper-v)
+    - [hyperv-check-snapshots.yml](#hyperv-check-snapshotsyml)
+    - [hyperv-action-createsnapshot.yml](#hyperv-action-createsnapshotyml)
+    - [hyperv-check-nosnapshots.yml](#hyperv-check-nosnapshotsyml)
+- [Custom Modules](#custom-modules)
+  - [PRTG](#prtg-1)
+    - [check\_prtg](#check_prtg)
+    - [pause\_prtg](#pause_prtg)
+  - [Hyper-V](#hyper-v-1)
+    - [hyperv\_check\_snapshots](#hyperv_check_snapshots)
+    - [hyperv\_action\_createsnapshot](#hyperv_action_createsnapshot)
+    - [hyperv\_action\_state](#hyperv_action_state)
 
 # Setup Framework<a name="Setup"></a>
 
@@ -56,31 +56,28 @@ Setup your vault using the following procedure:
 
 1. Save vault password to file
 ```
-echo MyPassword > vault-password.txt
+echo MyPassword > ~/vault-password.txt
 ```
 
 2. create ansible vault
   
 ```
-# create vault
-ansible-vault create ./environments/prod/group_vars/all/vault.yml
-```
-
-3. enter the following information
-
-```
-# Connection parameters
+# windows - create vault
+ansible-vault create ./environments/prod/group_vars/windows_servers/secrets.yml
 windows_admin_username: "myDomain\\myWindowsUser"
 windows_admin_password: "myWindowsPassword"
+
+# linux - create vault
+ansible-vault create ./environments/prod/group_vars/linux_servers/secrets.yml
 linux_admin_username: "myLinuxUser"
 linux_admin_password: "myLinuxPassword"
 ```
 
-4. edit hosts file
+3. edit inventory file
 
 edit the host file as desired
 ```
-vi ./environments/prod/hosts
+vi ./environments/prod/inventory.yml
 ```
 
 ## Module - PRTG<a name="SetupModulePRTG"></a>
@@ -90,21 +87,22 @@ If you plan to use the 'prtg' module you have to setup the following
 1. add prtg parameters to your vault
 
 ```
-ansible-vault edit ./environments/prod/group_vars/all/vault.yml
+ansible-vault create ./environments/prod/group_vars/all/secrets_prtg.yml
 ```
+
 2. append your prtg connection parameters
 ```
 # parameters for module 'prtg'
-module_prtg_server_address: 172.20.0.91
-module_prtg_api_username: exampleUser
-module_prtg_api_passhash: 111111111
+prtg_api_url: 172.20.0.91
+prtg_api_user: exampleUser
+prtg_api_passhash: 111111111
 ```
-3. edit environments/prod/group_vars/all/hosts
 
-Add the prtg_device_id to each of the hosts you want to use with the prtg module like so:
+3. specify prtg_device_id
+
+Add the prtg_device_id for each of the hosts. example file:
 ```
-[windows_servers]
-example_server ansible_host=172.20.0.91 prtg_device_id=1027
+environments/prod/host_vars/linux_example_server.yml
 ```
 You can find the PRTG device id in your prtg web interface.
 

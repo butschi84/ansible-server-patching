@@ -1,0 +1,7 @@
+---
+- hosts: all
+  tasks:
+   - name: check monitoring status
+     include_role:
+        name: prtg_check_status
+     when: prtg_check_status is defined and prtg_check_status | bool

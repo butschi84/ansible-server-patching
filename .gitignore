@@ -1,2 +1,3 @@
 vault-password.txt
 environments/prod/group_vars/all/vault.yml
+secrets*.yml
