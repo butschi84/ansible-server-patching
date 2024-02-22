@@ -10,3 +10,9 @@
 - name: "check if devices have pending reboots"
   include_tasks: check_pending_reboot.yml
   when: "'check_pending_reboot' in tasks"
+
+# check for new updates
+# ----------------
+- name: "check if devices have new updates available"
+  include_tasks: check_updates.yml
+  when: "'check_updates' in tasks"

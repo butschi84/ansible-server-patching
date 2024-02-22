@@ -9,7 +9,9 @@
         tasks:
           - check_monitoring
 
-    # check free disk space & pending reboots
+    # - check free disk space
+    # - check pending reboots
+    # - check new updates available
     - name: check free disk space
       include_role:
         name: windows_checks
@@ -17,6 +19,7 @@
         tasks:
           - check_diskspace
           - check_pending_reboot
+          - check_updates
 
     # pause monitoring for prtg device
     - name: "pause monitoring for device {{ inventory_hostname }}"
