@@ -16,3 +16,9 @@
 - name: "check if devices have new updates available"
   include_tasks: check_updates.yml
   when: "'check_updates' in tasks"
+
+# install all available updates
+# ----------------
+- name: "install all available updates"
+  include_tasks: action_install_updates.yml
+  when: "'action_install_updates' in tasks"

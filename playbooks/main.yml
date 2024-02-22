@@ -12,14 +12,22 @@
     # - check free disk space
     # - check pending reboots
     # - check new updates available
-    - name: check free disk space
+    - name: run pre-update checks
       include_role:
-        name: windows_checks
+        name: windows_update
       vars:
         tasks:
           - check_diskspace
           - check_pending_reboot
           - check_updates
+
+    # update installation
+    - name: install available updates
+      include_role:
+        name: windows_update
+      vars:
+        tasks:
+          - action_install_updates
 
     # pause monitoring for prtg device
     - name: "pause monitoring for device {{ inventory_hostname }}"
