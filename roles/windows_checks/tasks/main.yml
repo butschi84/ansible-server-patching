@@ -1,7 +1,12 @@
 ---
-# check disk space
-# ----------------
 # check if there is enough disk space
+# ----------------
 - name: "check if devices have enough empty disk space"
   include_tasks: check_diskspace.yml
   when: "'check_diskspace' in tasks"
+
+# check wether there is a reboot pending
+# ----------------
+- name: "check if devices have pending reboots"
+  include_tasks: check_pending_reboot.yml
+  when: "'check_pending_reboot' in tasks"

@@ -1,3 +1,4 @@
+---
 - name: Examine various registry locations identify a pending reboot
   win_shell: |
 

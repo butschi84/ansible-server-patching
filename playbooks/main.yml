@@ -9,13 +9,14 @@
         tasks:
           - check_monitoring
 
-    # check free disk space
+    # check free disk space & pending reboots
     - name: check free disk space
       include_role:
         name: windows_checks
       vars:
         tasks:
           - check_diskspace
+          - check_pending_reboot
 
     # pause monitoring for prtg device
     - name: "pause monitoring for device {{ inventory_hostname }}"
