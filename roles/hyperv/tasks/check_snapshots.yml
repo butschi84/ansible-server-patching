@@ -1,0 +1,15 @@
+---
+- name: check if vm has a snapshot younger than 1 day
+  hyperv_check_snapshots:
+    vmname: "{{ hyperv_vmname }}"
+    state: "present"
+    snapshotAgeYoungerThanMinutes: 1440
+  delegate_to: "{{ hyperv_host | int }}"
+  vars:
+    ansible_connection: winrm
+    ansible_winrm_server_cert_validation: ignore
+    ansible_winrm_scheme: https
+    ansible_winrm_port: 5986
+    ansible_winrm_transport: credssp
+    ansible_user: "{{ hyperv_admin_username }}"
+    ansible_password: "{{ hyperv_admin_password }}"

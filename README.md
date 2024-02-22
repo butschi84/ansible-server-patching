@@ -117,19 +117,21 @@ If you plan to use the 'hyperv' module you have to setup the following:
 1. add hyperv parameters to your vault
 
 ```
-ansible-vault edit ./environments/prod/group_vars/all/vault.yml
+ansible-vault create ./environments/prod/group_vars/all/secrets_hyperv.yml
 ```
 2. append your prtg connection parameters
 ```
 # parameters for module 'hyperv'
-module_hyperv_host: 172.20.0.91
+hyperv_host: 172.20.0.91
+hyperv_admin_username: administrator
+hyperv_admin_password: secret
 ```
-3. edit environments/prod/group_vars/all/hosts
 
-Add the hyperv_vmname to each of the hosts you want to use with the hyperv module like so:
+3. specify hyperv_vmname
+
+Add the hyperv_vmname for each of the hosts. example file:
 ```
-[windows_servers]
-exampleServerVM ansible_host=172.20.0.91 hyperv_vmname=exampleServerVM
+environments/prod/host_vars/linux_example_server.yml
 ```
 
 # Playbooks<a name="Playbooks"></a>

@@ -3,3 +3,6 @@ ansible_connection: local
 
 # prtg: module variables
 prtg_device_id: 2039
+
+# hyper-v: vm name
+hyperv_vmname: vm1
