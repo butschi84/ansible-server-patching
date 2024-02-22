@@ -1,0 +1,7 @@
+---
+# check disk space
+# ----------------
+# check if there is enough disk space
+- name: "check if devices have enough empty disk space"
+  include_tasks: check_diskspace.yml
+  when: "'check_diskspace' in tasks"

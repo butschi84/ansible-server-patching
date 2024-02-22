@@ -14,4 +14,4 @@
     - name: fail if there is not enough space
       fail:
         msg: "VM {{inventory_hostname}} has not enough space"
-      when: "{{freespace.stdout | int < 20}}"
+      when: "{{freespace.stdout | int < windows_checks_minimum_free_diskspace_gb | int}}"
