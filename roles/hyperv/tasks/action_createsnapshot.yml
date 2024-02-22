@@ -1,0 +1,14 @@
+---
+- name: create a new snapshot for vm
+  hyperv_action_createsnapshot:
+    vmname: "{{ hyperv_vmname }}"
+    snapshotName: "snapshot by ansible patching automation"
+  delegate_to: "{{ hyperv_host }}"
+  vars:
+    ansible_connection: winrm
+    ansible_winrm_server_cert_validation: ignore
+    ansible_winrm_scheme: https
+    ansible_winrm_port: 5986
+    ansible_winrm_transport: credssp
+    ansible_user: "{{ hyperv_admin_username }}"
+    ansible_password: "{{ hyperv_admin_password }}"

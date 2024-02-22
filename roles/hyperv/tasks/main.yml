@@ -1,0 +1,25 @@
+---
+# error prevention
+# ----------------
+- name: check variable hyperv_vmname
+  ansible.builtin.fail:
+    msg: "host variable 'hyperv_vmname' has to be defined in order to run hyperv tasks for the device"
+  when: hyperv_vmname is undefined
+
+# check if device has a recent hyper-v snapshot
+# ---------------------------------------------
+- name: "check if device has a recent hyper-v snapshot"
+  include_tasks: check_snapshots.yml
+  when: "'check_snapshots' in tasks"
+
+# verify that device has no hyper-v snapshot currently
+# ----------------------------------------------------
+- name: "verify that device has no hyper-v snapshot currently"
+  include_tasks: check_nosnapshots.yml
+  when: "'check_nosnapshots' in tasks"
+
+# create a snapshot for the device in hyper-v
+# -------------------------------------------
+- name: "create a snapshot for the device in hyper-v"
+  include_tasks: action_createsnapshot.yml
+  when: "'action_createsnapshot' in tasks"
